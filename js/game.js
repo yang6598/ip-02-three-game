@@ -239,6 +239,7 @@
     },
 
     toTitle() {
+      if (G.Music) G.Music.setIntensity(0);
       S.screen = 'title';
       S.phase = 'idle';
       S.paused = false;
@@ -394,6 +395,7 @@
        开始比赛
        ============================================================ */
     startMatch(mode, c1, c2, level) {
+      if (G.Music) G.Music.setIntensity(1);
       S.mode = mode;
       S.level = level;
       S.round = 1;
@@ -688,6 +690,7 @@
         G.FX.Screen.flashColor = attacker.char.color;
         G.CAM.shake(7);
         S.superFreeze = frames;
+        if (G.Music) G.Music.duck(0.18, 1.4);
         // 招式名牌:滚动闪现超必杀名
         const nm = attacker.move ? attacker.move.name : '';
         const cn = attacker.char.cn || '';
