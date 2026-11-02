@@ -34,6 +34,7 @@
     WAKEUP: 'wakeup',
     DASH_F: 'dashF',
     DASH_B: 'dashB',
+    TP: 'tp',
     THROWN: 'thrown',
     SUPER: 'super',
     WIN: 'win',
@@ -123,6 +124,9 @@
       this.jumpDir = 0;
       this.airJumpsLeft = this.char.airJumps || 0;
       this.shortHop = false;
+
+      this.tpCd = 0; // 瞬移冷却(帧)
+      this.tpReadyPing = false;
 
       this._rehitCount = 0;
       this.armorFlash = 0;
@@ -230,6 +234,15 @@
       }
       if (this.dizzy > 0) this.dizzy--;
 
+      // 瞬移冷却
+      if (this.tpCd > 0) {
+        this.tpCd--;
+        if (this.tpCd === 0 && !this.tpReadyPing) {
+          this.tpReadyPing = true;
+          G.SFX.play('tp_ready', 0.5);
+        }
+      }
+
       this.shakeOffset *= 0.6;
 
       if (this.st === ST.KO) {
@@ -286,6 +299,10 @@
         case ST.DASH_B:
           this._dash(opp, sys, -1);
           break;
+        case ST.TP:
+          // 瞬移落点硬直
+          if (this.stFrame >= 8) this._toIdle();
+          break;
         case ST.WIN:
         case ST.INTRO:
         case ST.THROWN:
@@ -297,7 +314,7 @@
       this._updateAnim();
 
       // 残影
-      if (this.st === ST.DASH_F || this.st === ST.ATTACK && this.move && this.move.level >= 2) {
+      if (this.st === ST.TP || this.st === ST.DASH_F || this.st === ST.ATTACK && this.move && this.move.level >= 2) {
         this.ghostTimer++;
         if (this.ghostTimer % 2 === 0) {
           const pose = G.Rig.poseFor(this.char, this.anim, this.animFrame, this.animTotal, sys.gf);
@@ -366,6 +383,11 @@
         this.anim = 'walkB';
       } else if (this.st === ST.WALK_F) {
         this.anim = 'walkF';
+      } else if (this.st === ST.TP) {
+        // 瞬移落点:闪现蹲姿
+        this.anim = 'land';
+        this.animFrame = 2;
+        this.animTotal = 6;
       } else {
         this.anim = 'idle';
       }
@@ -390,6 +412,16 @@
       // ---- 尝试出招(优先级:超必杀 > 必杀 > 投技 > 普通技)----
       if (this._trySpecial(opp, sys)) return;
       if (this._tryNormal(opp, sys)) return;
+
+      // ---- 瞬移(H) ----
+      if (pad.recent('tp', 3)) {
+        pad.consume('tp');
+        if (this.tpCd <= 0) {
+          this._startTeleport(opp, sys, dir);
+          return;
+        }
+        G.SFX.play('ui_move', 0.35); // 冷却中:轻提示
+      }
 
       // ---- 跳跃 ----
       if (dir.up) {
@@ -704,6 +736,39 @@
         if (this._tryNormal(opp, sys)) return;
         if (this._trySpecial(opp, sys)) return;
       }
+    }
+
+    /* ---------------- 瞬移 ----------------
+       H 键:向按住的方向(默认朝对手)瞬间位移 160px,
+       可穿过对手,期间 10 帧无敌;冷却 4 秒。 */
+    _startTeleport(opp, sys, dir) {
+      const TP_DIST = 160;
+      // 方向:按住前/后 → 该方向;没按 → 朝对手
+      let dx;
+      if (dir.forward) dx = this.facing;
+      else if (dir.back) dx = -this.facing;
+      else dx = opp && opp.x >= this.x ? 1 : -1;
+
+      const fromX = this.x;
+      const lim = G.CFG.STAGE_HALF - 20;
+      this.x = Math.max(-lim, Math.min(lim, this.x + dx * TP_DIST));
+
+      // 起点粒子 + 终点粒子
+      const cc = this.char.color;
+      G.FX.ring(fromX, 44, cc, 6, 40, 0.28);
+      G.FX.ring(this.x, 44, cc, 4, 34, 0.34);
+      G.FX.dust(fromX, 0, -dx, 8);
+      G.FX.speedLines(this.x, 40, dx, 6);
+
+      // 状态:落点硬直 8 帧 + 10 帧无敌 + 残影
+      this.st = ST.TP;
+      this.stFrame = 0;
+      this.vx = 0;
+      this.invuln = Math.max(this.invuln, 10);
+      this.tpCd = 240;
+      this.tpReadyPing = false;
+      this.ghostTimer = 0;
+      G.SFX.play('teleport', 0.9);
     }
 
     /* ============================================================
