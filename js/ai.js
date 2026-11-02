@@ -13,9 +13,9 @@
       this.dir = 5;
       this.dirHist = [];
       for (let i = 0; i < 40; i++) this.dirHist.push(5);
-      this.held = { lp: false, hp: false, lk: false, hk: false, sp: false, ex: false, su: false };
-      this.pressed = { lp: false, hp: false, lk: false, hk: false, sp: false, ex: false, su: false };
-      this.released = { lp: false, hp: false, lk: false, hk: false, sp: false, ex: false, su: false };
+      this.held = { lp: false, hp: false, lk: false, hk: false, sp: false, ex: false, su: false, tp: false };
+      this.pressed = { lp: false, hp: false, lk: false, hk: false, sp: false, ex: false, su: false, tp: false };
+      this.released = { lp: false, hp: false, lk: false, hk: false, sp: false, ex: false, su: false, tp: false };
       this.buf = [];
       this.frame = 0;
       this.enabled = true;
@@ -267,6 +267,10 @@
           }
           pad.setDir(d);
           return;
+        } else if (me.tpCd <= 0 && Math.random() < this.cfg.punish * 0.5) {
+          // 不防 → 有概率瞬移拉开(垂直于对手进攻方向)
+          this._doTeleport(me.facing === 1 ? 4 : 6);
+          return;
         } else if (this.cfg.punish > Math.random() && me.canAct && dist < 200) {
           // 尝试用无敌技反击
           if (this.cfg.antiAir > Math.random()) {
@@ -371,18 +375,28 @@
       }
       if (r < cfg.aggro) {
         this._queueCombo(dist);
-      } else if (r < cfg.aggro + 0.10) {
+      } else if (r < cfg.aggro + 0.08 && me.tpCd <= 0) {
+        // 瞬移绕后:穿过对手落到身后
+        this._doTeleport(dirToOpp > 0 ? 6 : 4);
+      } else if (r < cfg.aggro + 0.18) {
         // 投技
         this._queueGrab(dist);
-      } else if (r < cfg.aggro + 0.22) {
+      } else if (r < cfg.aggro + 0.30) {
         this.plan = { type: 'retreat', frames: 12 + Math.random() * 12 };
         this.planFrame = 0;
-      } else if (r < cfg.aggro + 0.30) {
+      } else if (r < cfg.aggro + 0.38) {
         this._startJump(9);
       } else {
         this.plan = { type: 'wait', frames: 10 + Math.random() * 16 };
         this.planFrame = 0;
       }
+    }
+
+    /** AI 瞬移:dirNum 为数字键盘方向 */
+    _doTeleport(dirNum) {
+      this.pad.setDir(this._mirrorDir(dirNum));
+      this.pad.press('tp');
+      this.cooldown = 16;
     }
 
     _execPlan(dist, dirToOpp, opp) {
@@ -405,6 +419,10 @@
         }
       } else if (p.type === 'retreat') {
         pad.setDir(me.facing === 1 ? 4 : 6);
+        // 退到墙角 → 瞬移穿过对手脱困
+        if (me.tpCd <= 0 && Math.abs(me.x) > G.CFG.STAGE_HALF - 100 && Math.random() < 0.08) {
+          this._doTeleport(dirToOpp > 0 ? 6 : 4);
+        }
       } else if (p.type === 'wait') {
         pad.setDir(5);
         // 等待时偶尔蹲一下,表现"思考"
