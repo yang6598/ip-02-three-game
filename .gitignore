@@ -1,3 +1,4 @@
 shot-*.png
 *.png
 !bg/**/*.png
+.wrangler/
