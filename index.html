@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="PgiVB5ZfYv2IlGMxqu2iM9">
+<head data-page-node-id="4Sy1K5yJK9lYyUx2ylq1y3">
+<meta charset="UTF-8" data-page-node-id="EQyeMy6V2widxTQPUt7mqW">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" data-page-node-id="RFrQjtKdgczzl6KFMlCqVF">
+<title>NEON RIFT — 霓虹裂隙</title>
+<link rel="stylesheet" href="css/style.css" data-page-node-id="5jFMx99EQFlVwIbED73Xbi">
+</head>
+<body class="in-menu" data-page-node-id="Pesup76KD3EMFjFOabAhC7">
+
+<div id="app" data-page-node-id="LK0XcTM2gVPi3814nVA7Yl">
+  <canvas id="game" data-page-node-id="1gx8QHA7LqR9FPbgpIsJfr"></canvas>
+
+  <!-- ================= HUD ================= -->
+  <div id="hud" data-page-node-id="t2bIF9FGI0sXQr7zZMJxxZ">
+    <div class="hp-row" data-page-node-id="JIUKOhHxWWGaalmp1yKoxU">
+      <div class="side p1" data-page-node-id="johsedGuPxzmoSedY8f1BJ">
+        <div class="nm" id="name1" data-page-node-id="cfJcw9Ew8LIQ5lDJ8Ldien">VOLT</div>
+        <div class="barwrap" data-page-node-id="ONiImDtnMPGrs9P8tihQpF">
+          <div class="bar" data-page-node-id="hlbH3C6PvXEJjR8qlFlhtK">
+            <div class="trail" id="hp1Trail" data-page-node-id="ZGrp16qpweL9PmDCJ74cnd"></div>
+            <div class="fill" id="hp1" data-page-node-id="HciJCD2AABUkdCcxBub1Gb"></div>
+            <div class="bar-tex" data-page-node-id="4PdvI3aXEmREjXWii55yFm"></div>
+          </div>
+        </div>
+        <div class="pips" id="pips1" data-page-node-id="1srhTLvKKj3xmYtNlyM6lS"><i class="pip" data-page-node-id="YBoWFFEWX3jD7fXU6VFFOf"></i><i class="pip" data-page-node-id="xDNPS9zbBT78WjYz5VP0Bq"></i></div>
+      </div>
+
+      <div class="tmr" data-page-node-id="ucOqq9MV7UQoFnmQRdz1Ov">
+        <div class="tmr-frame" data-page-node-id="L9PMOSx2bJMfJFqUD5U8RM">
+          <div id="timerVal" data-page-node-id="piCA2g0TKCT1IHKKLIXQaB">99</div>
+        </div>
+      </div>
+
+      <div class="side p2" data-page-node-id="upkher0cmmAIL8mxRKvS09">
+        <div class="nm" id="name2" data-page-node-id="hCxOsKIdjPk01emvErWPcK">KAGE</div>
+        <div class="barwrap" data-page-node-id="Dwq15mXDswNIbEHQWFfwtu">
+          <div class="bar" data-page-node-id="qQNRIFBUkFMZMv8Vo7Ykhl">
+            <div class="trail" id="hp2Trail" data-page-node-id="2ux4FccmICyc3d5CVQmXfZ"></div>
+            <div class="fill" id="hp2" data-page-node-id="4ajtKzlBF2HUOWu3rtaghM"></div>
+            <div class="bar-tex" data-page-node-id="gy2bN1my6AEYWLTUqQNzLs"></div>
+          </div>
+        </div>
+        <div class="pips" id="pips2" data-page-node-id="NHuGV1yhYDlTaFlJr0F1KM"><i class="pip" data-page-node-id="dCfkjusfxssns2W4kbbI1P"></i><i class="pip" data-page-node-id="LpAJS12avkc91RSIB9Ij6n"></i></div>
+      </div>
+    </div>
+
+    <div class="meter-row" data-page-node-id="B9BeGEdKPfA40SIksi0CXl">
+      <div class="meter m1" id="mbox1" data-page-node-id="29d0glpBd8IOmcaUnF9Y5A"><div class="mfill" id="meter1" data-page-node-id="GW3lTI6A3AcaYz8MEf7CLn"></div><span class="mlabel" data-page-node-id="grIfVoxyAogrAWT9zJe6bs">POWER</span><span class="mready" data-page-node-id="9eMiqrVewRD1s4L1GzeTrM">SUPER READY · P</span></div>
+      <div class="meter m2" id="mbox2" data-page-node-id="zW97cw8y4gDZ7a0E5Ebrpy"><div class="mfill" id="meter2" data-page-node-id="8nGSEQ91F6nDbVS7ys96Ys"></div><span class="mlabel" data-page-node-id="qpebJMtbf0Jw2T6eZgzDNH">POWER</span><span class="mready" data-page-node-id="pFe5IO2Ro6HF6JCTPTwh7t">SUPER READY</span></div>
+    </div>
+
+    <div id="comboDisp" data-page-node-id="fFSCyPALBrZubOKmQwqPA9">
+      <span class="cb-n" data-page-node-id="JxhuUiptJIiA3YeSGw0hRi">0</span>
+      <span class="cb-l" data-page-node-id="hWfhpekzEkq1x3kD9T8Ihu">HITS</span>
+      <span class="cb-d" data-page-node-id="VNSgmFPdzBqqLK2lMNS7TF"></span>
+    </div>
+
+    <div id="keyHint" data-page-node-id="5WSlfDgkmwvMxnF6QXguBv">
+      <span data-page-node-id="kfDXkTsYfN4RVsKDkaIa7l"><b data-page-node-id="ihMS3a9GRfgjjK42IEBNX0">L</b>远程</span>
+      <span data-page-node-id="TgftbYGJJU14id52h1PEbO"><b data-page-node-id="eeSOsLXz3qt8UOUTnHWqjt">O</b>必杀</span>
+      <span data-page-node-id="0P1bTpgsstGp5aEmAqk6Nd"><b data-page-node-id="G7yb2Vja0ukHiErpcK9UKg">P</b>超必杀</span>
+      <span data-page-node-id="UKOM27nAJGjHDSdmD16h4q"><b data-page-node-id="q7f68XuAuIf6hcHS8z6xaC">J K U I</b>拳脚</span>
+      <span data-page-node-id="oaCFcE5q21I2PejqJ13T1w"><b data-page-node-id="E6ED1Xc98MsiI0SZsDIF1e">轻点上</b>小跳</span>
+    </div>
+  </div>
+
+  <!-- ================= 标题 ================= -->
+  <div id="titleScreen" class="screen on" data-page-node-id="TweXmOR4PY9dXV8Bxfsed0">
+    <div class="title-bg-grid" data-page-node-id="g7JMFGpiwWY6hDmmB8SPgn"></div>
+    <div class="title-inner" data-page-node-id="CpaAcyU0SfiwDHEU6VxkBN">
+      <div class="kicker" data-page-node-id="lbsC4hcKHCUicMnV4Ycxif">A 2D FIGHTING GAME</div>
+      <h1 class="logo" data-page-node-id="THLLb1rlZaAl0iJfhIOCBH">
+        <span class="lg-neon" data-page-node-id="fWLy2U3nli0lYdfRuWaSKp">NEON</span><span class="lg-rift" data-page-node-id="YEyMQAQn0rHnoIDZ06aogd">RIFT</span>
+      </h1>
+      <div class="logo-cn" data-page-node-id="i9YLs6iFvas7P7xSHx5SMl">霓 虹 裂 隙</div>
+      <p class="tagline" data-page-node-id="q71Iccg5HBoBitE9hfGJsp">
+        在赛博都市的雨夜里,<br data-page-node-id="hXKUkuNBidUrXEZ5ZLmc1U">
+        每一次起手帧都是一次赌博。
+      </p>
+
+      <nav class="menu" data-page-node-id="BFDKnhpekVcdx1YpjACe7O">
+        <button id="mArcade" class="m-item" data-page-node-id="MQUU49kJ9FpJCGn0QWnM0I">
+          <span class="m-idx" data-page-node-id="FdlNuhpHKTRfl13sQXAVHW">01</span>
+          <span class="m-name" data-page-node-id="KYOPeQLFHRSkSq9UOZ1F5J">街机模式</span>
+          <span class="m-desc" data-page-node-id="7vy46VspcaWvyFuRaJECH6">挑战四档难度的 AI</span>
+        </button>
+        <button id="mVersus" class="m-item" data-page-node-id="9GueFWBox6zx9m5l734VHh">
+          <span class="m-idx" data-page-node-id="64BK2FXrwSggW4FBqKhi6w">02</span>
+          <span class="m-name" data-page-node-id="CCs8wt2rENWGoMwIfzgESV">双人对战</span>
+          <span class="m-desc" data-page-node-id="1Z7zViLdH8Tl7kGCZJbmmp">同键盘本地对战</span>
+        </button>
+        <button id="mTraining" class="m-item" data-page-node-id="QKXGuA7wEBaGGwobVzcSpj">
+          <span class="m-idx" data-page-node-id="EcUTemE57zdElef28S8Yt6">03</span>
+          <span class="m-name" data-page-node-id="oqIlmn0gbGu7d4ZsGO4jZa">训练模式</span>
+          <span class="m-desc" data-page-node-id="SV0n3vqmUCJ95QQBNg9bLz">判定框 · 帧数据 · 输入历史</span>
+        </button>
+        <button id="mChallenge" class="m-item" data-page-node-id="zoJLGmqKhQoP9O3FO3aKLU">
+          <span class="m-idx" data-page-node-id="u7vCqblKM34sDO5RYNattl">04</span>
+          <span class="m-name" data-page-node-id="zbG8bEpo12kGYzdt9l9OYr">连段挑战</span>
+          <span class="m-desc" data-page-node-id="lGEbOHH8AWfOSwaoKfcGdL">8 道连段课题</span>
+        </button>
+        <button id="mStory" class="m-item m-small" data-page-node-id="4a7Tk5hBGjunznLRQuuBzO">
+          <span class="m-idx" data-page-node-id="fg217vDeifa7BOjz90Zo7b">05</span>
+          <span class="m-name" data-page-node-id="4nT6tDi1DBkExOSBBKFYdB">世界观剧情</span>
+        </button>
+        <button id="mHelp" class="m-item m-small" data-page-node-id="4v7dWc9sm8FOvcIaNWEBe2">
+          <span class="m-idx" data-page-node-id="3cIOkZcUeJPcGsijjwn59O">06</span>
+          <span class="m-name" data-page-node-id="PIqbAYy3L1OxUAyfEZPF8V">操作说明</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="title-foot" data-page-node-id="nzVujYyWzSFCwpG7N89uut">
+      <span data-page-node-id="p0v2ETDVmxmdcpK0aDjhAE">6 FIGHTERS</span>
+      <span class="dot" data-page-node-id="fXpwMTUhdobcLcYUg0CSUu">·</span>
+      <span data-page-node-id="DuSXGz1dVSDFHhH6WeTh99">60 FPS FIXED STEP</span>
+      <span class="dot" data-page-node-id="hQmt2xXPzYBDaN3yJpRZee">·</span>
+      <span data-page-node-id="SDItPVMlOnD2ESrEMJoKg3">FRAME-DATA DRIVEN</span>
+      <span class="dot" data-page-node-id="cWx6ChkX5IeivfCCwYCUA7">·</span>
+      <span data-page-node-id="9Y7HWW5LKDVu0hWCMqFZYL">CANCEL / ARMOR / REHIT</span>
+    </div>
+  </div>
+
+  <!-- ================= 选人 ================= -->
+  <div id="selectScreen" class="screen" data-page-node-id="6I29fGxgvo3wqiLnJOAroe">
+    <div class="sel-head" data-page-node-id="HpYHc5Hnkj6fkp0yZDMBPW">
+      <h2 data-page-node-id="BveXc4Xf3cJTmdJzFWHxCi">SELECT FIGHTER</h2>
+      <div id="selHint" data-page-node-id="z2y4SjYmjqBA0h3KZLtL6z">选择 P1 角色</div>
+    </div>
+    <div id="charList" class="char-list" data-page-node-id="uz5eMOQ6vehrQ5ADMPzuhh"></div>
+    <div class="sel-foot" data-page-node-id="D9M9baP9cJ9eGuMeORp0K7">
+      <button id="selBack" class="btn ghost" data-page-node-id="lfgrl30JZzVUUOUPef28gy">返回</button>
+      <button id="selFight" class="btn primary" data-page-node-id="r1r50ny1YGrkVzqGGYGF5g">开 战</button>
+    </div>
+  </div>
+
+  <!-- ================= 训练 UI ================= -->
+  <div id="trainingUI" class="overlay-ui" data-page-node-id="q1MINIyVrLA3cCQ1ztinL9">
+    <div class="tr-panel" data-page-node-id="6jEhZvAdVQamxZNtYe11z4">
+      <div class="tr-h" data-page-node-id="JZmnGdDQ8vLjQEFupXOcCv">TRAINING</div>
+      <div class="tr-row" data-page-node-id="M7WGam7VmLJJcH74Nwi8jH">
+        <span class="tr-k" data-page-node-id="YAji3bH3y0vwx43Wmy36gD">假人</span>
+        <div class="tr-btns" data-page-node-id="TPN0XRr1oWXtGqA7aXuB3t">
+          <button class="tiny on" data-dummy="stand" data-page-node-id="KmU1JEypWLvKBsFv5EL1Qg">站立</button>
+          <button class="tiny" data-dummy="crouch" data-page-node-id="aGtDDobquvsjddpbz0BXZY">蹲下</button>
+          <button class="tiny" data-dummy="block" data-page-node-id="kNrrAt5PkwrGATYGy8hBQ5">防御</button>
+          <button class="tiny" data-dummy="crouchBlock" data-page-node-id="AqyTh0Ggr2p7ffL6gBsFlU">蹲防</button>
+          <button class="tiny" data-dummy="counter" data-page-node-id="6WwztG7qPC5V1Tj32FdKtS">反击</button>
+          <button class="tiny" data-dummy="jump" data-page-node-id="nq5VK0HVWlzNROq3savJZg">跳跃</button>
+        </div>
+      </div>
+      <div class="tr-row" data-page-node-id="SEE8ZEu0Nhbn6U4nZEZzPq">
+        <span class="tr-k" data-page-node-id="XEaXtQoUFpflkgDtGl29HM">显示</span>
+        <div class="tr-btns" data-page-node-id="rH6W1ELR2kIFCc93F37RQz">
+          <button class="tiny on" id="btnBoxes" data-page-node-id="7wuFBHc3hnqKcx3nHVIPMX">判定框</button>
+          <button class="tiny on" id="btnFrames" data-page-node-id="GHgpfAhfZLktjkfVcWtqY5">帧数据</button>
+          <button class="tiny" id="btnReset" data-page-node-id="632rdGXbiva1LgIhUaGJ0z">重置</button>
+        </div>
+      </div>
+      <button id="trBack" class="btn ghost sm" data-page-node-id="qJC3O6vnDH26jizjSj0rBT">退出训练</button>
+    </div>
+  </div>
+
+  <!-- ================= 挑战 UI ================= -->
+  <div id="challengeUI" class="overlay-ui" data-page-node-id="nfqiawGn4sf0PwjrsqrSZh">
+    <div class="ch-panel" data-page-node-id="PWBmP2dBn50rzkkuI4bFoE">
+      <div class="tr-h" data-page-node-id="NiCBN2H3sdHabyD3Da4xBQ">COMBO TRIALS</div>
+      <div id="chList" class="ch-list" data-page-node-id="yyYgnMVLjkfGDha81hg1s6"></div>
+      <div class="ch-hint" id="chHint" data-page-node-id="xNHxatTOLb6b5IT1iJMjBN"></div>
+      <button id="chBack" class="btn ghost sm" data-page-node-id="USydtUDZCScYuccWOrZakV">退出挑战</button>
+    </div>
+  </div>
+
+  <!-- ================= 帮助 ================= -->
+  <div id="helpScreen" class="modal" data-page-node-id="U9xJRkzW1CnilxtvNVqNBM">
+    <div class="modal-box" data-page-node-id="tA72Ph3uEVHGLzoE0XPEF3">
+      <h3 data-page-node-id="RC4fxtp9jmZ0OrgXX6zDxg">操 作 说 明</h3>
+      <div class="cols" data-page-node-id="VgVjdpByKavCdNkntFNWbQ">
+        <div class="col" data-page-node-id="gSP7bagdBFXxx5ONueJZBF">
+          <div class="ck p1c" data-page-node-id="r2X3CSKFdasUOa0wEayk3t">P1</div>
+          <table data-page-node-id="kVvk89yOmSvMixkGgY5dPj">
+            <tr data-page-node-id="gmlTz4In1ch8izZz4aeWb9"><td data-page-node-id="NIKRFImUC0eYQS4ktHW2V8">移动 / 蹲 / 跳</td><td data-page-node-id="sGBWY0UOIEomYFI3xeXDxM"><kbd data-page-node-id="TmO4X34zgbWD5uqFuFjvqg">W</kbd><kbd data-page-node-id="5OZm5haJs6Wln4xIDeBswT">A</kbd><kbd data-page-node-id="bNUVEoAoaNh7kEhzZ6Bb7o">S</kbd><kbd data-page-node-id="6PiE7VQV4rl9kwxJRT56W1">D</kbd></td></tr>
+            <tr data-page-node-id="8iR2c7L09XcxJLxtHdBVzU"><td data-page-node-id="iyNHOUVbEM8wMjfeUbymz4">轻拳</td><td data-page-node-id="fB1OLODualfAgnzaNY22PD"><kbd data-page-node-id="0AYIpWUKoeMfEO4VPqKAZE">J</kbd></td></tr>
+            <tr data-page-node-id="sftvQE1DkOGe4T8VOIC8DZ"><td data-page-node-id="wiPS2tSVkFysANAzK5h7HW">重拳</td><td data-page-node-id="EwdGDhm1P5l6DdLDSsUU3V"><kbd data-page-node-id="IkWrkvFHRY6EJPz0TTGw7n">K</kbd></td></tr>
+            <tr data-page-node-id="heTgZYrAKmyOG6PbJYrIoA"><td data-page-node-id="QRuRxxIBos0sCoJ4buclAF">轻脚</td><td data-page-node-id="uAEqGcaFPd8TGcn2ZpTNCg"><kbd data-page-node-id="8R11DVbzeGh7Ijpqug0uX7">U</kbd></td></tr>
+            <tr data-page-node-id="cvCSzng5QJGzCxPxDz2aVf"><td data-page-node-id="NTyFpBC4FhisJMsRbPN9d4">重脚</td><td data-page-node-id="cdtKbphJI81msbyHM6qgOM"><kbd data-page-node-id="TaDpKpTbp32frKtzJwEbMM">I</kbd></td></tr>
+            <tr data-page-node-id="Uvae2wdd9kEU2NkdZ19k7I"><td data-page-node-id="uWEVRpRNUfIEELaNnpNUe3"><b class="hi" data-page-node-id="aF6ywQxU0aRDpeC4WoHA72">远程攻击</b></td><td data-page-node-id="GhrSldbkP4xyZAf2qlttAH"><kbd class="hi" data-page-node-id="IcwDE3ytYoMSIIia5OqDdm">L</kbd></td></tr>
+            <tr data-page-node-id="y1QL0mCOq0jJCpT8y8Cpzy"><td data-page-node-id="QmtRikjrfVERWuaRlwg1SJ">必杀(直发)</td><td data-page-node-id="ado1I85aK44pFepvocrmOk"><kbd data-page-node-id="aL8EwgGfryJmh5zzFD4EsH">O</kbd></td></tr>
+            <tr data-page-node-id="s5iDEgDQexpJPLmRo101zj"><td data-page-node-id="WOCFTg1B8FEzjjjRKw1N1h">超必杀(直发)</td><td data-page-node-id="zIgZAENjBNUniIjPuGyLXu"><kbd data-page-node-id="h1j783ILA7lvuQnBoTd53e">P</kbd></td></tr>
+          </table>
+        </div>
+        <div class="col" data-page-node-id="Jho6MONNH1F5QSrV3b3F8s">
+          <div class="ck p2c" data-page-node-id="hMWVtQUDXB0hLMU1j4kjeT">P2</div>
+          <table data-page-node-id="gBpczIOMaVMBbPEL2AMFKu">
+            <tr data-page-node-id="EuG8GDI9a62CRfJFoxEXM7"><td data-page-node-id="SouEqVXhEUDLRmhoyWVJke">移动 / 蹲 / 跳</td><td data-page-node-id="MWKZp1K30wFUBp1XJEVX34"><kbd data-page-node-id="680ObpcXiDdmpore595gwr">↑</kbd><kbd data-page-node-id="0QPWuvnO6slyN2uLfuZHeH">←</kbd><kbd data-page-node-id="kctpOJD1H9p70uBIAMBm0T">↓</kbd><kbd data-page-node-id="hmH4hdsYlmDqHj6i06ppuO">→</kbd></td></tr>
+            <tr data-page-node-id="RJNTqOHggdiM5tVkFMSa8A"><td data-page-node-id="qShk3Ox9coIi3SZy1YzeyL">轻拳</td><td data-page-node-id="Eu2FRWB1zTDHqXcBEEkTm6"><kbd data-page-node-id="KcTF28x6G4Pw8ujJWVNaIj">Num1</kbd>/<kbd data-page-node-id="T9X6FKL07THw3g1UiDcqwz">B</kbd></td></tr>
+            <tr data-page-node-id="5vfyLnGMVrdch2gOlGCylH"><td data-page-node-id="xuc3QGlY1FsJPEd81SKiup">重拳</td><td data-page-node-id="RoG7aceWeDwsoavEyBH4ai"><kbd data-page-node-id="LzkUEddwuyII797BvpjZGX">Num2</kbd>/<kbd data-page-node-id="S2j1knXJBU3QetfqO1bDvq">N</kbd></td></tr>
+            <tr data-page-node-id="46TSuUa1RZbsjyssNnPcvz"><td data-page-node-id="PXHAwE255uj78XwFMCN86G">轻脚</td><td data-page-node-id="i7mudvO1AaI57fy1C3i9FM"><kbd data-page-node-id="0P6TBZjUDg6T5LqPdTHioX">Num4</kbd>/<kbd data-page-node-id="nqfaeoJ19jKpL7vn7RSaSX">M</kbd></td></tr>
+            <tr data-page-node-id="oAfyBczq3n0kVYmVfTeV1e"><td data-page-node-id="1HtuGrwqalzM7gqHdybFYJ">重脚</td><td data-page-node-id="JIATmTCA34iGhqTHWWnwCQ"><kbd data-page-node-id="20vzlM0K7iqOWNGdgsaVyy">Num5</kbd>/<kbd data-page-node-id="RxBSokLDQX1U36obD6wWKF">,</kbd></td></tr>
+            <tr data-page-node-id="m2AzSr9DxXfNyi098PRPRV"><td data-page-node-id="3VKDmjPiO6RtBUk71BQu7p"><b class="hi" data-page-node-id="B73ZkAChI6aSW5StWU3Sbq">远程攻击</b></td><td data-page-node-id="d9zWLWbE06pO0hwfH32WJr"><kbd class="hi" data-page-node-id="JjzkyfXemg96mZzIkfSc7V">Num9</kbd>/<kbd class="hi" data-page-node-id="TPAidxvdOhde6iuND1I8Qp">;</kbd></td></tr>
+            <tr data-page-node-id="f65Axro8BOcAqeYZnlP7t1"><td data-page-node-id="4lEgEHnWvKt5wAHfD6fHrR">必杀(直发)</td><td data-page-node-id="OuSr9vwjcGl4PzCqXid37Q"><kbd data-page-node-id="gZ5FWyyzCNLjJdx1WwicDM">Num7</kbd>/<kbd data-page-node-id="i61RiKk7fd6DloCpIdJHRx">.</kbd></td></tr>
+            <tr data-page-node-id="VGXA3lN2SSM1YOCKj4n6Iz"><td data-page-node-id="s15Ibx4wh8UqhYhhOPIjFJ">超必杀(直发)</td><td data-page-node-id="1FOGVfR6c1A3UBrZZGhOHj"><kbd data-page-node-id="b1pAbSnFYWi059N0q61gJG">Num8</kbd>/<kbd data-page-node-id="hIVXllFcAmZLQHaOvNmQyy">/</kbd></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="cmd-block" data-page-node-id="VSKKT7AN2293iYZKnL3pCc">
+        <div class="cb-title" data-page-node-id="gVHktYJqmvgwjp7RHfEC3L">指令技(以面朝右为例)</div>
+        <div class="cmd-grid" data-page-node-id="uLBuO8Rt3PdX6hQOlpJFYC">
+          <div data-page-node-id="K3OgmZ7XXWS1ojLBWDQAT0"><b data-page-node-id="TnwHZITdIqJp7Va8xR781r">L 一键</b><span data-page-node-id="hEQ3lfP7BSltn9BUPEixMB">远程攻击 · 六人全有,不需搓招</span></div>
+          <div data-page-node-id="NMPuEnd3buUjh2QglbPAhE"><b data-page-node-id="1ZD9O6BlJrlWAdsEWe9FVm">236 + 拳</b><span data-page-node-id="NikHGDB3eBhBR84G650XqB">波动型 · 远距离牵制</span></div>
+          <div data-page-node-id="Zug5lcnuH6KNv66J74tRCW"><b data-page-node-id="yjDMFvBBYf1cD3WPHhdGBl">623 + 拳/脚</b><span data-page-node-id="XErkhpzcASPWzt3nsmD4EB">升龙型 · 起手无敌,可反击</span></div>
+          <div data-page-node-id="2HIql1NoelBHgxp3JcuInT"><b data-page-node-id="FeelIyuPdB6d9TBOrofkKD">214 + 脚/拳</b><span data-page-node-id="skRn5VvFpxBAD6LZk4nGaH">突进型 · 拉近距离</span></div>
+          <div data-page-node-id="fHpk5Wq8BFB9ikQS8oAChn"><b data-page-node-id="KdkdHxi0NuTutIAtS5zvJ3">轻拳 + 轻脚</b><span data-page-node-id="wvplAh0YUQwGExubXsXG0F">投技 · 不可防御</span></div>
+          <div data-page-node-id="p0zH8Pq1Hhh6IoJIYFYgTw"><b data-page-node-id="PXI6z7AEGkDEsbRmJFmwGK">236236 + 拳 / P</b><span data-page-node-id="EGfOasDjKJquybOALJNiBm">超必杀 · 只需 1 格能量</span></div>
+          <div data-page-node-id="GlOlTIECaItSao7GwaMTxh"><b data-page-node-id="p4ts5s3FCC4dIZH1PfTiB0">轻点上</b><span data-page-node-id="PFN8Cg4bAjnhJGQ5BPbSUG">小跳 · 低空快攻(KOF 手感)</span></div>
+          <div data-page-node-id="2U01FvIHvQn6qPYC0o9rI1"><b data-page-node-id="2WNHd66iixS7Z0VADrWxke">前前 / 后后</b><span data-page-node-id="DlUOnNaUwi6ERg2tXqYzoY">前冲 / 后撤 · 后撤起始无敌</span></div>
+        </div>
+      </div>
+
+      <div class="rule-block" data-page-node-id="mjBo6DCsZHa1ys9nF0PwFQ">
+        <b data-page-node-id="CSuuRYy6pmyFntAmwww2Ly">能量槽:</b>开局就有 1 格,命中/被击/防御/时间都会累积,满一格即可放超必杀。<br data-page-node-id="db5cw2dIeZLhnlT3odhOP8">
+        <b data-page-node-id="QyZhoPZYf2X89YjBihJ6io">防御规则:</b>按住「后」= 站防,「后下」= 蹲防。<br data-page-node-id="EAcP1n6sNSWom5HgbxIRwB">
+        下段(LOW)只能蹲防 · 中段(OVERHEAD)只能站防 · 投技不可防。<br data-page-node-id="VN9eCPrABe9UzQjRhPzjkW">
+        轻技命中后可取消接重技,重技可取消接必杀 —— 这是连段的基础。<br data-page-node-id="noBGrNdUpG9Fo2Rg54bjsd">
+        <b data-page-node-id="rgAfLOW5wQTpL8qU1oUUPC">六名角色的必杀技与指令各不相同</b>,出招表直接写在选人界面的卡片上。
+      </div>
+
+      <button id="helpClose" class="btn primary" data-page-node-id="PYChyFsZpHUyt9RtDAWmvW">关闭</button>
+    </div>
+  </div>
+
+  <!-- ================= 暂停 ================= -->
+  <div id="pauseScreen" class="modal" data-page-node-id="wQQv2hacRyFbG5e0yGwRLQ">
+    <div class="modal-box small" data-page-node-id="UeJ5zDzcaB0DJ6PHAtWd0I">
+      <h3 data-page-node-id="uu6UO0flDmQdlSwB4nADCK">PAUSED</h3>
+      <div class="pause-hint" data-page-node-id="zenBAwIMxyIqxNebMTHJ3W">按 <kbd data-page-node-id="r16NonCm6gTcpPoBRp2q3X">ESC</kbd> 继续</div>
+      <button id="pauseQuit" class="btn ghost" onclick="G.Game.toTitle()" data-page-node-id="jFzEwIm6dTTBSUBbSFfRBV">返回标题</button>
+    </div>
+  </div>
+
+  <!-- ================= 结束 ================= -->
+  <div id="endScreen" class="modal" data-page-node-id="0j3kxu299Z2tbvO9YzuWiy">
+    <div class="modal-box small" data-page-node-id="zDc7BDKmo1Hjenl03ap2vR">
+      <div class="end-title" data-page-node-id="nVltELVOw9lBSsBgZExYCi">VICTORY</div>
+      <div class="end-sub" data-page-node-id="LTfHND0nqzZ1AXWt0jFRH4"></div>
+      <button class="btn primary" onclick="G.Game.toTitle()" data-page-node-id="3aeu7Ttd4y01KerZnDZhfO">回到标题</button>
+    </div>
+  </div>
+
+  <!-- ================= VS 开场对话 ================= -->
+  <div id="vsBox" data-page-node-id="YCbV4vSnnTHqnRppG1nQRE">
+    <div class="vs-line p1l" data-page-node-id="0vjCMtq3hD145HLm5WmCQd"><span class="vs-name" id="vsName1" data-page-node-id="YUV2xi5UeYH0IiFVfwZsQx">VOLT</span><span class="vs-txt" id="vsText1" data-page-node-id="FV51cwWfB1SmF72aMZYkFO"></span></div>
+    <div class="vs-line p2l" data-page-node-id="YoG7SmbFLZT6ktxrg0wFqY"><span class="vs-name" id="vsName2" data-page-node-id="RtSltUdKlK1BBuLOnN84tB">KAGE</span><span class="vs-txt" id="vsText2" data-page-node-id="mYqy1Hq1F7LzkvPhDLjSLh"></span></div>
+  </div>
+
+  <!-- ================= 世界观剧情 ================= -->
+  <div id="storyScreen" class="modal" data-page-node-id="e6C87waGbegKQRbqo2Crfb">
+    <div class="modal-box story-box" data-page-node-id="tCOicMKhsHcCpQaLVtEzh9">
+      <h3 data-page-node-id="wgYSluNGq9kFyFDHdY8PrB">裂 隙 之 门</h3>
+      <div class="story-sub" data-page-node-id="zHg40wG1LFRyMIruw9Tto8">THE RIFT GATE · WORLD SETTING</div>
+      <div id="storyParas" class="story-paras" data-page-node-id="918z5RhZXNLQGLOjspywxC"></div>
+      <div class="story-roster" id="storyRoster" data-page-node-id="DGonuODo3RSoTJqaHKVT0F"></div>
+      <button id="storyClose" class="btn primary" data-page-node-id="4l7tKvae3dHeAj5qxQ46Xt">返回</button>
+    </div>
+  </div>
+
+  <!-- ================= 开场 CG ================= -->
+  <div id="cgScreen" class="off" data-page-node-id="L4uZ3CRnHWLroovTx8XBRt">
+    <canvas id="cgCanvas" data-page-node-id="E0ChyxETE5AZKFn3GW7kEe"></canvas>
+    <div id="cgSubs" data-page-node-id="Fpnmc2Ij6uuocC7pAa9zSG">
+      <div class="cg-sub" data-t="0.6" data-page-node-id="Piad2sbOMHGxHXELpfpubU">2149 年,人类撕开了夜空。</div>
+      <div class="cg-sub" data-t="3.6" data-page-node-id="q4RrcNsiXl9VHi5nBXQrAS">裂隙的能量渗入雨城,六个人觉醒了。</div>
+      <div class="cg-sub" data-t="6.6" data-page-node-id="SjZCOoK5EHAOmMZEAZiNKn">而裂隙核心,只允许一人进入。</div>
+      <div class="cg-sub" data-t="9.8" id="cgReady" data-page-node-id="MUu3rsPkswRRpV1LQiY0B0">按任意键 · 进入 RIFT GATE</div>
+    </div>
+    <div id="cgSkip" data-page-node-id="miVqlnavgTZG5V9wlMjqPu">SKIP ▸</div>
+  </div>
+
+  <!-- ================= 大字横幅 ================= -->
+  <div id="banner" data-page-node-id="dNstgOz7EpoeAQIUa4VS0R"></div>
+</div>
+
+<pre id="errout" style="position:fixed;left:0;bottom:0;z-index:9999;color:#0f0;font-size:10px;pointer-events:none;opacity:0" data-page-node-id="CpexrIQjVzyVqRLFAcnuC3"></pre>
+<script src="js/core.js"></script>
+<script src="js/moves.js"></script>
+<script src="js/rig.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/bg.js"></script>
+<script src="js/fighter.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/game.js"></script>
+<script>
+/* ============================================================
+   开场 CG:纯 canvas 电影化片头(雨城 → 裂隙觉醒 → 对决闪回 → LOGO)
+   任意键/点击/SKIP 跳过;?auto/?sel/?nocg 时直接跳过(供调试)
+   ============================================================ */
+function playIntroCG(done) {
+  var screen = document.getElementById('cgScreen');
+  var cv = document.getElementById('cgCanvas');
+  if (!screen || !cv) { done(); return; }
+  var ctx = cv.getContext('2d');
+  var W, H, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  function resize() {
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var t0 = 0;
+  try { t0 = parseFloat(new URLSearchParams(location.search).get('cgt') || '0') || 0; } catch (e) {}
+  var started = performance.now() - t0 * 1000;
+  var finished = false;
+  var rain = [];
+  for (var i = 0; i < 90; i++) {
+    rain.push({ x: Math.random(), y: Math.random(), v: 0.5 + Math.random(), l: 8 + Math.random() * 22 });
+  }
+  var shards = [];
+  for (var j = 0; j < 26; j++) {
+    shards.push({ a: Math.random() * Math.PI * 2, r: 40 + Math.random() * 200, v: 2 + Math.random() * 6 });
+  }
+
+  function end() {
+    if (finished) return;
+    finished = true;
+    screen.classList.add('off');
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('pointerdown', onKey);
+    window.removeEventListener('resize', resize);
+    document.getElementById('cgReady')?.classList.remove('on');
+    done();
+  }
+  function onKey() { end(); }
+
+  // 字幕按 data-t 时间点淡入
+  var subs = Array.prototype.slice.call(document.querySelectorAll('.cg-sub'));
+  subs.forEach(function (el) { el.classList.remove('on'); });
+
+  function drawSil(ctx, x, y, scale, color, lean) {
+    // 简易格斗家剪影:发光描边人形
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale * (lean || 1), scale);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.moveTo(0, -88); ctx.lineTo(0, -30);          // 躯干
+    ctx.moveTo(0, -30); ctx.lineTo(-12, 0);           // 后腿
+    ctx.moveTo(0, -30); ctx.lineTo(16, -2);           // 前腿(弓步)
+    ctx.moveTo(-4, -78); ctx.lineTo(-26, -60);        // 后臂
+    ctx.moveTo(-4, -76); ctx.lineTo(34, -84);         // 前臂(冲拳)
+    ctx.stroke();
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(0, -98, 11, 0, Math.PI * 2); ctx.fill();  // 头
+    ctx.restore();
+  }
+
+  function frame(now) {
+    if (finished) return;
+    var t = (now - started) / 1000;
+    var w = W, h = H;
+    ctx.clearRect(0, 0, w, h);
+
+    // ---------- 背景:深蓝夜空 ----------
+    var g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#04070f');
+    g.addColorStop(0.55, '#0a1226');
+    g.addColorStop(1, '#101a30');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    // ---------- 场景 A/B:城市剪影(视差滚动)+ 裂隙 ----------
+    var scrollA = (t * 12) % (w + 300) - 150;
+    var scrollB = (t * 34) % (w + 300) - 150;
+    function skyline(color, base, seed, scroll) {
+      ctx.fillStyle = color;
+      var x = -scroll;
+      while (x < w + 120) {
+        var rnd = Math.sin(x * 0.013 + seed) * Math.cos(x * 0.007 + seed * 2);
+        var bh = base + rnd * base * 0.55;
+        var bw = 40 + Math.abs(Math.sin(x * 0.021 + seed)) * 60;
+        ctx.fillRect(x, h - bh, bw, bh);
+        // 零星亮窗
+        if ((Math.floor(x * 7.7 + seed * 13) % 4) === 0) {
+          ctx.fillStyle = 'rgba(120,200,255,0.28)';
+          ctx.fillRect(x + bw * 0.3, h - bh + bh * 0.2, 3, 4);
+          ctx.fillRect(x + bw * 0.6, h - bh + bh * 0.45, 3, 4);
+          ctx.fillStyle = color;
+        }
+        x += bw + 12;
+      }
+    }
+    skyline('#0c1526', h * 0.34, 3, scrollA);
+    skyline('#060b16', h * 0.22, 7, scrollB);
+
+    // 裂隙:天空中一道逐渐张开的发光裂缝(3.4s 后出现)
+    if (t > 3.4) {
+      var k = Math.min(1, (t - 3.4) / 2.2);
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      var gw = w * 0.62 * k;
+      var gx = w * 0.5, gy = h * 0.26;
+      var lg = ctx.createLinearGradient(gx - gw / 2, gy, gx + gw / 2, gy);
+      lg.addColorStop(0, 'rgba(62,242,255,0)');
+      lg.addColorStop(0.5, 'rgba(210,250,255,' + (0.85 + Math.sin(t * 9) * 0.15) + ')');
+      lg.addColorStop(1, 'rgba(255,62,165,0)');
+      ctx.strokeStyle = lg;
+      ctx.lineWidth = 2.2 + k * 2;
+      ctx.shadowColor = '#6cf2ff';
+      ctx.shadowBlur = 26;
+      ctx.beginPath();
+      for (var sx = -gw / 2; sx <= gw / 2; sx += 14) {
+        var sy = gy + Math.sin(sx * 0.05 + t * 2.4) * 9 + Math.sin(sx * 0.013) * 16;
+        if (sx === -gw / 2) ctx.moveTo(gx + sx, sy); else ctx.lineTo(gx + sx, sy);
+      }
+      ctx.stroke();
+      // 裂隙粒子
+      ctx.shadowBlur = 10;
+      for (var pi = 0; pi < 3; pi++) {
+        var px = gx + (Math.random() - 0.5) * gw;
+        var py = gy + (Math.random() - 0.5) * 30;
+        ctx.fillStyle = Math.random() < 0.5 ? '#6cf2ff' : '#ff6cb8';
+        ctx.fillRect(px, py, 2, 2);
+      }
+      ctx.restore();
+    }
+
+    // ---------- 雨 ----------
+    ctx.strokeStyle = 'rgba(140,190,235,0.24)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (var ri = 0; ri < rain.length; ri++) {
+      var rr = rain[ri];
+      rr.y += rr.v * 0.024; if (rr.y > 1.05) rr.y = -0.05;
+      var rx = rr.x * w - t * 30;
+      ctx.moveTo((rx % w + w) % w, rr.y * h);
+      ctx.lineTo((rx % w + w) % w - 4, rr.y * h + rr.l);
+    }
+    ctx.stroke();
+
+    // ---------- 场景 C:两道剪影对冲(6.4s 起) ----------
+    if (t > 6.4) {
+      var ck = Math.min(1, (t - 6.4) / 1.6);
+      var e = 1 - Math.pow(1 - ck, 3);
+      var gap = w * 0.52 * (1 - e);
+      var bounce = t > 8.0 && t < 8.14 ? 6 : 0;
+      // 对冲速度线
+      if (ck < 1) {
+        ctx.strokeStyle = 'rgba(160,220,255,0.3)';
+        for (var li = 0; li < 6; li++) {
+          var ly = h * (0.5 + li * 0.07);
+          ctx.beginPath();
+          ctx.moveTo(w * 0.5 - gap - 60 - li * 30, ly);
+          ctx.lineTo(w * 0.5 - gap + 30 - li * 30, ly);
+          ctx.moveTo(w * 0.5 + gap + 60 + li * 30, ly);
+          ctx.lineTo(w * 0.5 + gap - 30 + li * 30, ly);
+          ctx.stroke();
+        }
+      }
+      drawSil(ctx, w * 0.5 - gap, h * 0.72, 1.0, '#4ef2ff');
+      drawSil(ctx, w * 0.5 + gap, h * 0.72, 1.0, '#ff4fa8', -1);
+      // 冲撞爆闪
+      if (t > 8.0 && t < 8.02) {
+        shards.forEach(function (sh) { sh.r = 30; });
+      }
+      if (t >= 8.0 && t < 9.2) {
+        var fk = Math.min(1, (t - 8.0) / 1.2);
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, 1 - fk * 1.15);
+        var cr = 30 + fk * 210;
+        var rg = ctx.createRadialGradient(w / 2, h * 0.6, 4, w / 2, h * 0.6, cr);
+        rg.addColorStop(0, 'rgba(255,255,255,0.95)');
+        rg.addColorStop(0.4, 'rgba(120,220,255,0.5)');
+        rg.addColorStop(1, 'rgba(120,220,255,0)');
+        ctx.fillStyle = rg;
+        ctx.beginPath(); ctx.arc(w / 2, h * 0.6, cr, 0, Math.PI * 2); ctx.fill();
+        // 碎片
+        shards.forEach(function (sh) {
+          sh.r += sh.v;
+          ctx.fillStyle = 'rgba(190,240,255,' + Math.max(0, 1 - fk) + ')';
+          ctx.fillRect(w / 2 + Math.cos(sh.a) * sh.r, h * 0.6 + Math.sin(sh.a) * sh.r, 3, 3);
+        });
+        ctx.restore();
+      }
+    }
+
+    // ---------- 场景 D:LOGO ----------
+    if (t > 9.6) {
+      var lk = Math.min(1, (t - 9.6) / 1.2);
+      ctx.save();
+      ctx.globalAlpha = lk;
+      ctx.textAlign = 'center';
+      ctx.font = '900 ' + Math.round(w * 0.085) + 'px "Arial Black", sans-serif';
+      ctx.shadowColor = '#3ef2ff';
+      ctx.shadowBlur = 30;
+      ctx.fillStyle = '#eafcff';
+      ctx.fillText('NEON RIFT', w / 2, h * 0.44);
+      ctx.font = Math.round(w * 0.024) + 'px sans-serif';
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = 'rgba(200,235,255,0.85)';
+      ctx.fillText('霓  虹  裂  隙', w / 2, h * 0.44 + w * 0.05);
+      ctx.restore();
+    }
+
+    // ---------- 字幕时间轴(JS 驱动透明度,稳定可靠) ----------
+    subs.forEach(function (el) {
+      var st = parseFloat(el.dataset.t || '0');
+      var DUR = 3.1, FADE = 0.45, HOLD = DUR - 0.8;
+      if (el.id === 'cgReady') {
+        // 常驻提示:脉动
+        var a = t >= st ? 0.45 + Math.sin((t - st) * 4) * 0.35 : 0;
+        el.style.opacity = Math.max(0, a).toFixed(3);
+        return;
+      }
+      var k = t - st;
+      var al = 0;
+      if (k >= 0 && k < DUR) {
+        al = Math.min(1, k / FADE);
+        if (k > HOLD) al = Math.max(0, 1 - (k - HOLD) / (DUR - HOLD));
+      }
+      el.style.opacity = al.toFixed(3);
+      el.style.transform = 'translateX(-50%) translateY(' + ((1 - Math.min(1, k / FADE)) * 12) + 'px)';
+    });
+
+    if (t >= 13.2) { end(); return; }
+    requestAnimationFrame(frame);
+  }
+
+  screen.classList.remove('off');
+  window.addEventListener('keydown', onKey);
+  window.addEventListener('pointerdown', onKey);
+  document.getElementById('cgSkip')?.addEventListener('click', onKey);
+  requestAnimationFrame(frame);
+}
+
+(function () {
+  var errs = [];
+  window.__errs = errs;
+  window.addEventListener('error', function (e) {
+    errs.push((e.message || 'err') + ' | ' + String(e.filename || '').split('/').pop() + ':' + e.lineno);
+    var o = document.getElementById('errout');
+    if (o) { o.textContent = errs.join('\n'); o.style.opacity = 1; }
+    document.title = 'ERR(' + errs.length + ') ' + errs[errs.length - 1];
+  });
+
+  window.addEventListener('load', function () {
+    var cv = document.getElementById('game');
+    G.Game.init(cv);
+
+    var unlock = function () {
+      G.SFX.init();
+      G.SFX.resume();
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+    };
+    window.addEventListener('pointerdown', unlock);
+    window.addEventListener('keydown', unlock);
+
+
+    // ---- 调试:?auto=training|arcade|versus|challenge ----
+    var p = new URLSearchParams(location.search);
+    // ---- 开场 CG(调试参数时跳过) ----
+    if (!p.has('auto') && !p.has('sel') && !p.has('nocg') && !p.has('story')) {
+      setTimeout(function () {
+        playIntroCG(function () {
+          G.SFX.play('ui_ok', 0.8);
+        });
+      }, 100);
+    }
+    if (p.has('auto')) {
+      var m = p.get('auto') || 'training';
+      var lv = p.get('lv') || 'normal';
+      var c1 = p.get('c1') || 'volt';
+      var c2 = p.get('c2') || 'kage';
+      setTimeout(function () {
+        G.Game.startMatch(m, c1, c2, lv);
+        G.Game.S.screen = (m === 'training' || m === 'challenge') ? m : 'play';
+        G.Game.showScreen(G.Game.S.screen);
+        if (m === 'challenge') { G.Game.S.challengeDone = G.CHALLENGES.map(function(){return false;}); G.Game.renderChallenge(); }
+        if (m === 'training') { G.Game.S.screen = 'training'; G.Game.showScreen('training'); }
+        document.body.classList.remove('in-menu');
+      }, 120);
+    }
+    if (p.has('sel')) setTimeout(function () { G.Game.gotoSelect('arcade'); }, 160);
+    if (p.has('story')) setTimeout(function () { G.Game.showStory(); }, 160);
+    if (p.has('q')) G._backMax = [1.3, 1.1, 0.9][parseInt(p.get('q'), 10) || 0] || 1.3;
+    if (p.has('boxes')) G.Game.S.showBoxes = true;
+    if (p.has('freeze')) G.Game.S.paused = true;
+    if (p.has('shot')) G.Game.S.paused = true;
+
+    // ---- 精确模拟 N 帧(不依赖 rAF,用于无头验证) ----
+    if (p.has('sim')) {
+      var n = parseInt(p.get('sim'), 10) || 60;
+      var test = p.get('test') || '';
+      setTimeout(function () {
+        var wasPaused = G.Game.S.paused;
+        G.Game.S.paused = false;
+        var pad = G.pads.p1;
+        window.__testLog = [];
+        window.__dbgSU = [];
+        var INTRO_SKIP = 130;
+        for (var i = 0; i < n + INTRO_SKIP; i++) {
+          var ii = i - INTRO_SKIP; // 注入帧从 0 计
+          // ---- 输入注入测试 ----
+          if (ii >= 0) {
+          if (test === 'lp') {
+            if (ii === 30) pad.raw['KeyJ'] = true;
+            if (ii === 33) pad.raw['KeyJ'] = false;
+          }
+          if (test === 'hk') {
+            if (ii === 30) pad.raw['KeyI'] = true;
+            if (ii === 34) pad.raw['KeyI'] = false;
+          }
+          if (test === 'bolt') { // 236P 电弧弹
+            if (ii === 20) pad.raw['KeyS'] = true;
+            if (ii === 24) { pad.raw['KeyS'] = false; pad.raw['KeyD'] = true; }
+            if (ii === 28) { pad.raw['KeyJ'] = true; }
+            if (ii === 32) { pad.raw['KeyD'] = false; pad.raw['KeyJ'] = false; }
+          }
+          if (test === 'dragon') { // 623P 雷升(标准 6→2→3)
+            if (ii === 20) pad.raw['KeyD'] = true;
+            if (ii === 24) { pad.raw['KeyS'] = true; pad.raw['KeyD'] = false; }
+            if (ii === 27) pad.raw['KeyD'] = true;
+            if (ii === 29) pad.raw['KeyJ'] = true;
+            if (ii === 34) { pad.raw['KeyD'] = false; pad.raw['KeyS'] = false; pad.raw['KeyJ'] = false; }
+          }
+          if (test === 'sweep') { // 2+HK 扫堂腿
+            if (ii === 20) pad.raw['KeyS'] = true;
+            if (ii === 26) pad.raw['KeyI'] = true;
+            if (ii === 30) { pad.raw['KeyS'] = false; pad.raw['KeyI'] = false; }
+          }
+          if (test === 'combo') { // LP → LP → HP 连段
+            if (ii === 30) pad.raw['KeyJ'] = true;
+            if (ii === 33) pad.raw['KeyJ'] = false;
+            if (ii === 48) pad.raw['KeyJ'] = true;
+            if (ii === 51) pad.raw['KeyJ'] = false;
+            if (ii === 64) pad.raw['KeyK'] = true;
+            if (ii === 68) pad.raw['KeyK'] = false;
+          }
+          if (test === 'jump') {
+            if (ii === 30) pad.raw['KeyW'] = true;
+            if (ii === 33) pad.raw['KeyW'] = false;
+            if (ii === 42) pad.raw['KeyI'] = true;
+            if (ii === 46) pad.raw['KeyI'] = false;
+          }
+          if (test === 'throw') {
+            if (ii === 30) { pad.raw['KeyJ'] = true; pad.raw['KeyU'] = true; }
+            if (ii === 34) { pad.raw['KeyJ'] = false; pad.raw['KeyU'] = false; }
+          }
+          }
+          if (test === 'su') { // 236236P 超必杀(贴身)
+            if (ii === 10 && G.Game.S.f1) { G.Game.S.f1.meter = 100; G.Game.S.f2.x = 40; }
+            if (ii === 20) pad.raw['KeyS'] = true;
+            if (ii === 24) { pad.raw['KeyS'] = false; pad.raw['KeyD'] = true; }
+            if (ii === 28) { pad.raw['KeyD'] = false; pad.raw['KeyS'] = true; }
+            if (ii === 32) { pad.raw['KeyS'] = false; pad.raw['KeyD'] = true; }
+            if (ii === 34) pad.raw['KeyJ'] = true;
+            if (ii === 38) { pad.raw['KeyD'] = false; pad.raw['KeyJ'] = false; }
+          }
+          if (test === 'suk') { // 214214P KAGE 超必杀(贴身)
+            if (ii === 10 && G.Game.S.f1) { G.Game.S.f1.meter = 100; G.Game.S.f2.x = -100; }
+            if (ii === 20) pad.raw['KeyS'] = true;
+            if (ii === 24) { pad.raw['KeyS'] = false; pad.raw['KeyA'] = true; }
+            if (ii === 28) { pad.raw['KeyA'] = false; pad.raw['KeyS'] = true; }
+            if (ii === 32) { pad.raw['KeyS'] = false; pad.raw['KeyA'] = true; }
+            if (ii === 34) pad.raw['KeyJ'] = true;
+            if (ii === 38) { pad.raw['KeyA'] = false; pad.raw['KeyJ'] = false; }
+          }
+          if (test === 'cancel' || test === 'cancelref') {
+            // 贴到对手身前,LP 命中后立刻接 HP(验证取消链)
+            if (ii === 5) { G.Game.S.f1.x = -100; G.Game.S.f2.x = 0; }
+            if (ii === 30) pad.raw['KeyJ'] = true;
+            if (ii === 33) pad.raw['KeyJ'] = false;
+            if (test === 'cancel') {
+              if (ii === 39) pad.raw['KeyK'] = true;
+              if (ii === 42) pad.raw['KeyK'] = false;
+            } else {
+              if (ii === 60) pad.raw['KeyK'] = true; // 等完全收招后再出,作为对照
+              if (ii === 63) pad.raw['KeyK'] = false;
+            }
+          }
+          if (test === 'proj') { // 远程:拉开距离,236+P 后看对面掉不掉血
+            if (ii === 5) { G.Game.S.f1.x = -280; G.Game.S.f2.x = 240; }
+            if (ii === 20) pad.raw['KeyS'] = true;
+            if (ii === 24) { pad.raw['KeyS'] = false; pad.raw['KeyD'] = true; }
+            if (ii === 28) { pad.raw['KeyJ'] = true; }
+            if (ii === 32) { pad.raw['KeyD'] = false; pad.raw['KeyJ'] = false; }
+          }
+          if (test === 'spkey') { // L 一键远程
+            if (ii === 5) { G.Game.S.f1.x = -280; G.Game.S.f2.x = 240; }
+            if (ii === 26) pad.raw['KeyL'] = true;
+            if (ii === 30) pad.raw['KeyL'] = false;
+          }
+          if (test === 'sp1key') { // O 一键必杀
+            if (ii === 5) { G.Game.S.f1.x = -100; G.Game.S.f2.x = 0; }
+            if (ii === 26) pad.raw['KeyO'] = true;
+            if (ii === 30) pad.raw['KeyO'] = false;
+          }
+          if (test === 'rush') { // 214K 电光突
+            if (ii === 20) pad.raw['KeyS'] = true;
+            if (ii === 24) { pad.raw['KeyS'] = false; pad.raw['KeyA'] = true; }
+            if (ii === 28) pad.raw['KeyI'] = true;
+            if (ii === 32) { pad.raw['KeyA'] = false; pad.raw['KeyI'] = false; }
+          }
+          try { G.Game.update(1 / 60); } catch (e) { (window.__simErr = window.__simErr || []).push(e.message + ' @ ' + String(e.stack || '').split('\n')[1]); }
+          if (G.Game.S.f1) {
+            var pn = G.Game.S.f1.projectiles.length + G.Game.S.f2.projectiles.length;
+            if (!window.__projMax || pn > window.__projMax) window.__projMax = pn;
+            window.__meterNow = Math.round(G.Game.S.f1.meter);
+          }
+          if (G.Game.S.f2) {
+            if (!window.__maxCombo || G.Game.S.f2.combo > window.__maxCombo.n) {
+              window.__maxCombo = { n: G.Game.S.f2.combo, dmg: Math.round(G.Game.S.f2.comboDmg) };
+            }
+          }
+          if (ii >= 0 && ii % 6 === 0 && G.Game.S.f1) {
+            var f1 = G.Game.S.f1;
+            window.__testLog.push(ii + ':' + f1.st + '/' + (f1.move ? f1.move.id + f1.moveFrame : f1.anim) + (f1.projectiles.length ? '+proj' : ''));
+          }
+        }
+        G.Game.S.paused = wasPaused;
+        G.Game.render(1);
+        window.__simDone = true;
+      }, 200);
+    }
+
+    // ---- 状态输出(供无头 dump-dom) ----
+    if (p.has('dump')) {
+      setInterval(function () {
+        var S = G.Game.S;
+        var o = document.getElementById('errout');
+        if (!o) return;
+        var parts = [];
+        var _kh = document.getElementById('keyHint');
+        if (_kh) parts.push('hint=' + _kh.className);
+        parts.push('screen=' + S.screen + ' phase=' + S.phase + ' fps=' + G.Loop.fps + ' q=' + G._backMax);
+        if (S.f1) parts.push('c1=' + S.f1.charId + ' hp=' + Math.round(S.f1.hp));
+        if (S.f2) parts.push('c2=' + S.f2.charId + ' hp=' + Math.round(S.f2.hp));
+        if (S.f1) parts.push('f1:' + S.f1.st + '/' + S.f1.anim + ' x=' + Math.round(S.f1.x) + ' hp=' + Math.round(S.f1.hp) + ' com=' + S.f1.combo + ' hurt=' + JSON.stringify(S.f1.hurtbox));
+        if (S.f2) parts.push('f2:' + S.f2.st + '/' + S.f2.anim + ' x=' + Math.round(S.f2.x) + ' hp=' + Math.round(S.f2.hp) + ' com=' + S.f2.combo + ' hb=' + S.f2.hitboxes.length + ' mv=' + (S.f2.move ? S.f2.move.id + ':' + S.f2.moveFrame : '-'));
+        if (window.__projMax) parts.push('projMax=' + window.__projMax);
+        if (window.__meterNow != null) parts.push('meter=' + window.__meterNow);
+        if (window.__maxCombo) parts.push('MAXCOMBO=' + window.__maxCombo.n + '/' + window.__maxCombo.dmg);
+        if (window.__testLog) parts.push('LOG[' + window.__testLog.filter(function(s){return s.indexOf('attack')>=0 || s.indexOf('super')>=0 || s.indexOf('proj')>=0 || s.indexOf('air')>=0 || s.indexOf('knock')>=0 || s.indexOf('squat')>=0;}).join(' ') + ']');
+        parts.push('simErr=' + (window.__simErr || []).slice(0,3).join(' ;; '));
+        parts.push('dbg=' + JSON.stringify(window.__dbgSU || window.__dbg || {}));
+        parts.push('errs=' + errs.length);
+        o.textContent = parts.join(' || ') + (errs.length ? '\n' + errs.join('\n') : '');
+        o.style.opacity = 1;
+        document.title = parts.join(' ');
+      }, 400);
+    }
+  });
+})();
+</script>
+</body>
+</html>
