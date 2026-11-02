@@ -72,6 +72,7 @@
       sp: ['KeyO'],
       ex: ['KeyL'],
       su: ['KeyP'],
+      tp: ['KeyH'],
     },
     p2: {
       up: ['ArrowUp'],
@@ -85,10 +86,11 @@
       sp: ['Numpad7', 'Period'],
       ex: ['Numpad9', 'Semicolon'],
       su: ['Numpad8', 'Slash'],
+      tp: ['Numpad0', 'KeyG'],
     },
   };
 
-  const BTN = ['lp', 'hp', 'lk', 'hk', 'sp', 'ex', 'su'];
+  const BTN = ['lp', 'hp', 'lk', 'hk', 'sp', 'ex', 'su', 'tp'];
 
   class Pad {
     constructor(which) {
@@ -398,6 +400,11 @@
       o.stop(c.currentTime + dur);
     },
 
+    // 音高随机微调,让每一下打击都不一样
+    _var(base, amt) {
+      return base * (0.9 + Math.random() * amt);
+    },
+
     play(name, vol) {
       if (!this.enabled || !this.ctx) return;
       vol = vol == null ? 1 : vol;
@@ -410,16 +417,28 @@
             this._noise(0.2, 900, 1.1, 0.18 * vol, 'bandpass');
             break;
           case 'hit_light':
-            this._noise(0.09, 2600, 0.9, 0.32 * vol, 'bandpass');
-            this._tone(180, 0.08, 'square', 0.09 * vol, 90);
+            // 三层:高频脆响 + 低频肉感 + 瞬态卡点
+            this._noise(0.06, this._var(3400, 0.25), 1.1, 0.3 * vol, 'bandpass');
+            this._tone(this._var(170, 0.3), 0.09, 'sine', 0.22 * vol, 62);
+            this._noise(0.025, 5200, 0.7, 0.16 * vol, 'highpass');
             break;
           case 'hit_heavy':
-            this._noise(0.18, 700, 0.7, 0.42 * vol, 'lowpass');
-            this._tone(110, 0.18, 'sawtooth', 0.16 * vol, 44);
+            // 四层:重低音冲击 + 闷响碎裂 + 金属泛音 + 余韵
+            this._tone(96, 0.24, 'sine', 0.36 * vol, 36);
+            this._noise(0.17, this._var(820, 0.3), 0.6, 0.4 * vol, 'lowpass');
+            this._tone(this._var(1750, 0.35), 0.05, 'square', 0.09 * vol, 900);
+            this._noise(0.3, 420, 0.5, 0.14 * vol, 'lowpass');
+            break;
+          case 'hit_counter':
+            // 确反/counter:更炸的一声
+            this._tone(120, 0.3, 'sine', 0.4 * vol, 30);
+            this._noise(0.2, 1100, 0.7, 0.42 * vol, 'bandpass');
+            this._noise(0.05, 4800, 0.8, 0.2 * vol, 'highpass');
             break;
           case 'block':
-            this._noise(0.09, 3600, 3.2, 0.16 * vol, 'bandpass');
-            this._tone(760, 0.06, 'square', 0.06 * vol, 620);
+            this._noise(0.07, this._var(3800, 0.2), 3.2, 0.16 * vol, 'bandpass');
+            this._tone(this._var(760, 0.2), 0.05, 'square', 0.07 * vol, 640);
+            this._tone(this._var(1180, 0.2), 0.04, 'triangle', 0.05 * vol, 980);
             break;
           case 'jump':
             this._tone(320, 0.1, 'sine', 0.1 * vol, 620);
@@ -429,6 +448,16 @@
             break;
           case 'dash':
             this._noise(0.16, 1500, 0.8, 0.14 * vol, 'bandpass');
+            break;
+          case 'teleport':
+            // 瞬移:上扫音 + 空间碎裂感
+            this._tone(420, 0.16, 'sawtooth', 0.12 * vol, 1650);
+            this._tone(900, 0.1, 'sine', 0.08 * vol, 2200);
+            this._noise(0.14, 2600, 1.6, 0.13 * vol, 'bandpass');
+            this._noise(0.06, 5600, 0.7, 0.1 * vol, 'highpass');
+            break;
+          case 'tp_ready':
+            this._tone(1320, 0.1, 'sine', 0.05 * vol, 1760);
             break;
           case 'special':
             this._tone(220, 0.3, 'sawtooth', 0.1 * vol, 880);
